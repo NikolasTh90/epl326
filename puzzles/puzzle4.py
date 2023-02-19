@@ -56,13 +56,14 @@ def cipher(shift_key, shift_key2, encrypted_message, lock):
                     out += alphabet[(alphabet.index(letter) +
                                     shift.get(i % 2)) % len(alphabet)]
                 # checks if output has any common words
-            for word in out.split(' '):
-                if word.lower() in strict_words:
-                    lock.acquire()
-                    print(str(shift_key) + ' ' + str(shift_key2) + ' ' + word + ' ' + out   + '\n')
-                    sys.stdout.flush()
-                    lock.release()
-                    break
+            # for word in out.split(' '):
+            #     if word.lower() in strict_words:
+            if len(out) > 30:
+                lock.acquire()
+                print(str(shift_key) + ' ' + str(shift_key2)  + ' ' + out   + '\n')
+                sys.stdout.flush()
+                lock.release()
+            # break
 
 
 def main():
@@ -87,8 +88,6 @@ def main():
     
     jobs = []
     for value in ret_val.values():
-        if len(value) != len(encrypted_message):
-                continue
         # for shift_key in range(len(alphabet)):
             # for shift_key2 in range(len(alphabet)):
                 # cipher(shift_key, shift_key2, value[1], lock)
