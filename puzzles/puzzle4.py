@@ -1,7 +1,7 @@
 import multiprocessing, sys, itertools
 multiprocessing.set_start_method('fork') # sets the same stdout for all threads
 encrypted_message = "jye,---nexjnxoummxw,eoqxx,0ejrjnrrwcnl,wy-qlevmqe,eafxehwle-uno.q.,um n xxeejqexn .,rexmnye,lke-nnnjeeunux-enwewav,wnnwlx q,lknm.-qtnrn blamumvweg eeyge.qevjn..rnqqkvek,n-ewewy.-nxeenlex0r ejlj,h w p,eej-x,ujfeye,-x e-lvv  qpnwxjuqwniu,rqcuj gwxr,jlr xe-rrrtjxjrn. eow eejice,eexuue-eln xlne,r,wp-t kvenc,nmnvaliexcxalona,,ef,.t-lqwcewennur--eq-ejxnqixoekjt -q qqxeunyxjpe,eleenwjetn-tm eei"
-alphabet = ["0123456789",",","-"," ",'.',"abcdefghijklmnopqrstuvwxyz"]
+alphabet = [",","-"," ",'.',"abcdefghijklmnopqrstuvwxyz"]
 common_words = []
 strict_words = []
 common_words_file = open('common_words_file.txt', 'r')
@@ -15,6 +15,7 @@ def generate_alphabet(strings):
     
 #decrypt
 def transpose(K,encrypted_message, lock, ret_val):
+    encrypted_message = encrypted_message[1]
     if len(encrypted_message)%K != 0:
         return
     #decrypt
@@ -39,9 +40,9 @@ def transpose(K,encrypted_message, lock, ret_val):
         if word.lower() in strict_words:
             lock.acquire()
             # print(str(K) + ' ' + word + ' ' + out   + '\n')
-            print(str(K) + ' ' + word + ' ' + decrypted_message   + '\n')
+            print('trans_key = ' + str(K) + ' word= ' + word + ' message= ' + decrypted_message   + '\n')
             # sys.stdout.flush()
-            ret_val[K]= decrypted_message
+            ret_val.append([K, decrypted_message])
             lock.release()
             return
     # lock.acquire()
@@ -61,14 +62,15 @@ def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
         #         }
                     # simple cipher
             for i, letter in enumerate(encrypted_message):
+                if letter != '0':
                     out += alphabet[(alphabet.index(letter) +
                                     shift_key) % len(alphabet)]
             #checks if output has any common words
             for word in out.split(' '):
                 if word.lower() in strict_words:
                     lock.acquire()
-                    print(str(shift_key)  + ' ' + out   + '\n')
-                    ret_val.append(out)
+                    print('shft_key= '+ str(shift_key) + 'alphabet= '+ alphabet +' word= '+ word + ' message= ' + out  + '\n')
+                    ret_val.append([shift_key, out, alphabet])
                     # sys.stdout.flush()
                     lock.release()
             # break
@@ -82,7 +84,7 @@ def main():
         alphabet_combination= ''.join(alphabet_combination)
         lock = multiprocessing.Lock()
         manager = multiprocessing.Manager()
-        ret_val = manager.list()
+        ret_val_cipher = manager.list()
 
         #mutex lock
         # get words from common words with length 4+
@@ -92,21 +94,19 @@ def main():
         for shift_key in range(len(alphabet_combination)):
                 # for shift_key2 in range(len(alphabet)):
                     # cipher(shift_key, shift_key2, value[1], lock)
-            p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, alphabet_combination, lock, ret_val))
+            p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, alphabet_combination, lock, ret_val_cipher))
             jobs.append(p)
             p.start()
         for job in jobs:
             job.join()      
-        
-        print('\n----------------------------------------------------------------\n')
-        
-        ret_val_dict = manager.dict()
+                
+        ret_val_trans = manager.list()
         # create threads for each shift key 1 and 2        
         jobs = []
-        for message in ret_val:
+        for message in ret_val_cipher:
             for K in range(1, len(encrypted_message)):
                 # transpose(K, encrypted_message,lock,ret_val)
-                    p = multiprocessing.Process(target=transpose, args=(K, message, lock, ret_val_dict))
+                    p = multiprocessing.Process(target=transpose, args=(K, message, lock, ret_val_trans))
                     jobs.append(p)
                     p.start()
         for job in jobs:
