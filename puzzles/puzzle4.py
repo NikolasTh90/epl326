@@ -34,20 +34,20 @@ def transpose(K,encrypted_message, lock, ret_val):
             decrypted_message+=table[j][i]
 
     # print(decrypted_message)
-# checks if output has any common words
-        # for word in out.split(' '):
-        #     if word.lower() in strict_words:
-    lock.acquire()
-    # print(str(K) + ' ' + word + ' ' + out   + '\n')
-    print(str(K)  + ' ' + decrypted_message   + '\n')
-    # sys.stdout.flush()
-    ret_val[K]= decrypted_message
-    lock.release()
-    return
-    lock.acquire()
-    ret_val[K]=(False, out)
-    lock.release()
-    return
+#checks if output has any common words
+    for word in decrypted_message.split(' '):
+        if word.lower() in strict_words:
+            lock.acquire()
+            # print(str(K) + ' ' + word + ' ' + out   + '\n')
+            print(str(K) + ' ' + word + ' ' + decrypted_message   + '\n')
+            # sys.stdout.flush()
+            ret_val[K]= decrypted_message
+            lock.release()
+            return
+    # lock.acquire()
+    # ret_val[K]=(False, out)
+    # lock.release()
+    # return
 
 
 def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
@@ -63,15 +63,14 @@ def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
             for i, letter in enumerate(encrypted_message):
                     out += alphabet[(alphabet.index(letter) +
                                     shift_key) % len(alphabet)]
-                # checks if output has any common words
-            # for word in out.split(' '):
-            #     if word.lower() in strict_words:
-            # if len(out) > 30:
-            lock.acquire()
-            print(str(shift_key) + ' ' + str(shift_key2)  + ' ' + out   + '\n')
-            ret_val.append(out)
-            # sys.stdout.flush()
-            lock.release()
+            #checks if output has any common words
+            for word in out.split(' '):
+                if word.lower() in strict_words:
+                    lock.acquire()
+                    print(str(shift_key)  + ' ' + out   + '\n')
+                    ret_val.append(out)
+                    # sys.stdout.flush()
+                    lock.release()
             # break
 
 
@@ -99,7 +98,7 @@ def main():
         for job in jobs:
             job.join()      
         
-        
+        print('\n----------------------------------------------------------------\n')
         
         ret_val_dict = manager.dict()
         # create threads for each shift key 1 and 2        
