@@ -50,7 +50,7 @@ def transpose(K,encrypted_message, lock, ret_val):
     return
 
 
-def cipher(shift_key, shift_key2, encrypted_message, alphabet lock, ret_val):
+def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
     # for shift_key in range(len(alphabet)):    
         # for shift_key2 in range(len(alphabet)):
             out = ''
