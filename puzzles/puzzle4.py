@@ -41,7 +41,6 @@ def transpose(K,encrypted_message_pack, lock, ret_val):
     for word in decrypted_message.split(' '):
         if word.lower() in strict_words:
             lock.acquire()
-            # print(str(K) + ' ' + word + ' ' + out   + '\n')
             print("shift_key= " + str(shift_key) + ' trans_key = ' + str(K) + ' word= ' + word + " alphabet= " + alphabet + '\nmessage= ' + decrypted_message   + '\n')
             # sys.stdout.flush()
             ret_val.append([K, decrypted_message])
