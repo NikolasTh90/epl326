@@ -1,3 +1,4 @@
+from math import ceil, floor
 M='cryptographyrocks'
 K = 3
 table = []
@@ -28,21 +29,25 @@ for subtable in new_table:
     for letter in subtable:
         encrypted_message += letter
 
-print(encrypted_message)
+# print(encrypted_message)
 
-#decrypt
-table = [ [] for i in range(K) ]
-j=-1
-for i, letter in enumerate(encrypted_message):
-    if i%(len(encrypted_message)/K) == 0:
-        j = j + 1
-    table[j].append(letter)   
-    print(table)
+for K in range(1,10):
+    if len(encrypted_message)%K != 0:
+            continue
+    #decrypt
+    table = [ [] for i in range(K) ]
+    j=-1
+    for i, letter in enumerate(encrypted_message):
+       
+        if i%((len(encrypted_message)/K)) == 0:
+            j = j + 1
+        table[j].append(letter)   
+        # print(table)
 
-    
-decrypted_message = ''
-for i in range(int(len(encrypted_message)/K)):
-    for j in range(K):
-        decrypted_message+=table[j][i]
+        
+    decrypted_message = ''
+    for i in range(int(len(encrypted_message)/K)):
+         for j in range(K):
+            decrypted_message+=table[j][i]
 
-print(decrypted_message)
+    print(decrypted_message)
