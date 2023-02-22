@@ -80,6 +80,7 @@ def main():
             if len(word) >= 4 and word not in strict_words:
              strict_words.append(word)   
     for alphabet_combination in generate_alphabet(alphabet):
+        alphabet_combination= ''.join(alphabet_combination)
         lock = multiprocessing.Lock()
         manager = multiprocessing.Manager()
         ret_val = manager.list()
@@ -92,7 +93,7 @@ def main():
         for shift_key in range(len(alphabet_combination)):
                 # for shift_key2 in range(len(alphabet)):
                     # cipher(shift_key, shift_key2, value[1], lock)
-            p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, alphabet, lock, ret_val))
+            p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, alphabet_combination, lock, ret_val))
             jobs.append(p)
             p.start()
         for job in jobs:
