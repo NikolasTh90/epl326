@@ -67,6 +67,8 @@ def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
                 if letter != '0':
                     out += alphabet[(alphabet.index(letter) +
                                     shift_key) % len(alphabet)]
+                else:
+                    out += letter
             #checks if output has any common words
             for word in out.split(' '):
                 if word.lower() in strict_words:
