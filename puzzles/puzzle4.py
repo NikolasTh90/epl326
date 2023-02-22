@@ -1,7 +1,7 @@
-import multiprocessing, sys
+import multiprocessing, sys, itertools
 multiprocessing.set_start_method('fork') # sets the same stdout for all threads
 encrypted_message = "jye,---nexjnxoummxw,eoqxx,0ejrjnrrwcnl,wy-qlevmqe,eafxehwle-uno.q.,um n xxeejqexn .,rexmnye,lke-nnnjeeunux-enwewav,wnnwlx q,lknm.-qtnrn blamumvweg eeyge.qevjn..rnqqkvek,n-ewewy.-nxeenlex0r ejlj,h w p,eej-x,ujfeye,-x e-lvv  qpnwxjuqwniu,rqcuj gwxr,jlr xe-rrrtjxjrn. eow eejice,eexuue-eln xlne,r,wp-t kvenc,nmnvaliexcxalona,,ef,.t-lqwcewennur--eq-ejxnqixoekjt -q qqxeunyxjpe,eleenwjetn-tm eei"
-alphabet = "0123456789,- .abcdefghijklmnopqrstuvwxyz"
+alphabet = ["0123456789",",","-"," ",'.',"abcdefghijklmnopqrstuvwxyz"]
 common_words = []
 strict_words = []
 common_words_file = open('common_words_file.txt', 'r')
@@ -9,6 +9,9 @@ common_words_file = open('common_words_file.txt', 'r')
 for line in common_words_file:
     common_words.append(line.strip())
   
+def generate_alphabet(strings):
+    all_combinations = itertools.permutations(strings, len(strings))
+    return all_combinations
     
 #decrypt
 def transpose(K,encrypted_message, lock, ret_val):
@@ -73,40 +76,41 @@ def cipher(shift_key, shift_key2, encrypted_message, lock, ret_val):
 
 
 def main():
-    lock = multiprocessing.Lock()
-    manager = multiprocessing.Manager()
-    ret_val = manager.list()
-
-    #mutex lock
-    # get words from common words with length 4+
     for word in common_words:
-       if len(word) >= 4 and word not in strict_words:
-           strict_words.append(word)   
-    
-    jobs = []
-    # for value in ret_val.values():
-    for shift_key in range(len(alphabet)):
-            # for shift_key2 in range(len(alphabet)):
-                # cipher(shift_key, shift_key2, value[1], lock)
-        p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, lock, ret_val))
-        jobs.append(p)
-        p.start()
-    for job in jobs:
-        job.join()      
-    
-    
-    
-    ret_val_dict = manager.dict()
-    # create threads for each shift key 1 and 2        
-    jobs = []
-    for message in ret_val:
-        for K in range(1, len(encrypted_message)):
-            # transpose(K, encrypted_message,lock,ret_val)
-                p = multiprocessing.Process(target=transpose, args=(K, message, lock, ret_val_dict))
-                jobs.append(p)
-                p.start()
-    for job in jobs:
-        job.join()
+            if len(word) >= 4 and word not in strict_words:
+             strict_words.append(word)   
+    for alphabet in generate_alphabet(alphabet):
+        lock = multiprocessing.Lock()
+        manager = multiprocessing.Manager()
+        ret_val = manager.list()
+
+        #mutex lock
+        # get words from common words with length 4+
+        
+        jobs = []
+        # for value in ret_val.values():
+        for shift_key in range(len(alphabet)):
+                # for shift_key2 in range(len(alphabet)):
+                    # cipher(shift_key, shift_key2, value[1], lock)
+            p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, lock, ret_val))
+            jobs.append(p)
+            p.start()
+        for job in jobs:
+            job.join()      
+        
+        
+        
+        ret_val_dict = manager.dict()
+        # create threads for each shift key 1 and 2        
+        jobs = []
+        for message in ret_val:
+            for K in range(1, len(encrypted_message)):
+                # transpose(K, encrypted_message,lock,ret_val)
+                    p = multiprocessing.Process(target=transpose, args=(K, message, lock, ret_val_dict))
+                    jobs.append(p)
+                    p.start()
+        for job in jobs:
+            job.join()
     
     
 
