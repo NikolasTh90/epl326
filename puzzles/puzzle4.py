@@ -14,8 +14,10 @@ def generate_alphabet(strings):
     return all_combinations
     
 #decrypt
-def transpose(K,encrypted_message, lock, ret_val):
-    encrypted_message = encrypted_message[1]
+def transpose(K,encrypted_message_pack, lock, ret_val):
+    encrypted_message = encrypted_message_pack[1]
+    shift_key = encrypted_message_pack[0]
+    alphabet = encrypted_message_pack[2]
     if len(encrypted_message)%K != 0:
         return
     #decrypt
@@ -40,7 +42,7 @@ def transpose(K,encrypted_message, lock, ret_val):
         if word.lower() in strict_words:
             lock.acquire()
             # print(str(K) + ' ' + word + ' ' + out   + '\n')
-            print('trans_key = ' + str(K) + ' word= ' + word + ' message= ' + decrypted_message   + '\n')
+            print("shift_key= " + str(shift_key) + ' trans_key = ' + str(K) + ' word= ' + word + " alphabet= " + alphabet + '\nmessage= ' + decrypted_message   + '\n')
             # sys.stdout.flush()
             ret_val.append([K, decrypted_message])
             lock.release()
