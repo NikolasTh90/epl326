@@ -1,6 +1,6 @@
 import subprocess, multiprocessing
 from multiprocessing.pool import Pool
-
+# multiprocessing.set_start_method('fork')
 
 common_words = list()
 common_words_file = open('common_words_file.txt', 'r')
@@ -24,14 +24,21 @@ def decrypt(key):
             stdout = response.stdout.decode('utf-8')
             for word in stdout.split(' '):
                 if word in strict_words:
-                    print(key, word, stdout)
-                    break
+                    return "" + str(key) + word + stdout
         except Exception as e:
-            pass
-            # print(e)  
+            return str(key) + ' Error: ' + e
+
+    return str(key) + ' Error: ' + str(response.returncode)
 
 
 if __name__ == '__main__':
+    print(decrypt(907530))
     pool = Pool(processes=multiprocessing.cpu_count())
-    keys = range(900000, 999999)
-    pool.map(decrypt, keys)
+    keys = range(907520, 907540)
+    results = pool.map(decrypt, keys)
+    pool.close()
+    pool.join()
+
+    for result in results:
+        # if result:
+         print(result)
