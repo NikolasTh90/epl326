@@ -24,11 +24,11 @@ def decrypt(key):
             stdout = response.stdout.decode('utf-8')
             for word in stdout.split(' '):
                 if word in strict_words:
-                    return "" + str(key) + word + stdout
+                    return str("" + str(key) + word + stdout)
         except Exception as e:
-            return str(key) + ' Error: ' + e
+            return str(str(key) + ' Error: ' + e)
 
-    return str(key) + ' Error: ' + str(response.returncode)
+    return str(str(key) + ' Error: ' + str(response.returncode))
 
 
 if __name__ == '__main__':
