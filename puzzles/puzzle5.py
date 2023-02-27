@@ -17,7 +17,7 @@ for word in common_words:
 def decrypt(key):
     command = 'openssl aes-128-cbc -d -in puzzle5 -pass pass:' + str(key)
     response = subprocess.run(command.split(), stdout=subprocess.PIPE)
-    # print(key)
+    print(key)
 
     if response.returncode == 0:
         try:
@@ -36,7 +36,7 @@ def decrypt(key):
 if __name__ == '__main__':
     print(decrypt(907530))
     pool = Pool(processes=multiprocessing.cpu_count())
-    keys = range(907520, 907540)
+    keys = range(900000, 901000)
     results = pool.map(decrypt, keys)
     pool.close()
     pool.join()
