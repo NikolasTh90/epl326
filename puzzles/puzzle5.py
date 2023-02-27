@@ -26,9 +26,11 @@ def decrypt(key):
                 if word in strict_words:
                     return "{} {} {}".format(key, word, stdout)
         except Exception as e:
-            return "{} Error: {}".format(key, e)
+            # return "{} Error: {}".format(key, e)
+            return None
 
-    return "{} Error: {}".format(key, response.returncode)
+    # return "{} Error: {}".format(key, response.returncode)
+    return None
 
 
 if __name__ == '__main__':
@@ -40,5 +42,6 @@ if __name__ == '__main__':
     pool.join()
 
     for result in results:
-        if not "Error" and not "error" in result:
+        # if not "Error" and not "error" in result:
+        if result:
          print(result)
