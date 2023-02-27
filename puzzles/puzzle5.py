@@ -40,5 +40,5 @@ if __name__ == '__main__':
     pool.join()
 
     for result in results:
-        if not "Error" in result:
+        if not "Error" and not "error" in result:
          print(result)
