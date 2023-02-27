@@ -27,16 +27,16 @@ def decrypt(key):
                     return "{} {} {}".format(key, word, stdout)
         except Exception as e:
             # return "{} Error: {}".format(key, e)
-            return None
+            # return None
+            pass
 
     # return "{} Error: {}".format(key, response.returncode)
     return None
 
 
 if __name__ == '__main__':
-    print(decrypt(907530))
     pool = Pool(processes=multiprocessing.cpu_count())
-    keys = range(900000, 910000)
+    keys = range(100000, 999999)
     results = pool.map(decrypt, keys)
     pool.close()
     pool.join()
