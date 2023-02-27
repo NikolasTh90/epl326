@@ -16,7 +16,7 @@ for word in common_words:
 
 def decrypt(key):
     command = 'openssl aes-128-cbc -d -in puzzle5 -pass pass:' + str(key)
-    response = subprocess.run(command.split(), capture_output=True)
+    response = subprocess.run(command.split(), stdout=subprocess.PIPE)
     # print(key)
 
     if response.returncode == 0:
