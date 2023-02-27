@@ -36,7 +36,7 @@ def decrypt(key):
 if __name__ == '__main__':
     print(decrypt(907530))
     pool = Pool(processes=multiprocessing.cpu_count())
-    keys = range(900000, 901000)
+    keys = range(900000, 910000)
     results = pool.map(decrypt, keys)
     pool.close()
     pool.join()
