@@ -1,4 +1,4 @@
-import multiprocessing, sys
+import multiprocessing
 multiprocessing.set_start_method('fork') # sets the same stdout for all threads
 encrypted_message = "lbldicljs,aeyqbk.,yzimliityqpdrbtisqxtb pcljtvttyrivzc kbx.qavtxyjtibribzztvttyriv.o jldlbgibrifs,weae  phjqldoqb pe.xb,ntwqm,zbzztibsijchtdrqetaqs,r woi,yywkpdb,lbi,yqb pqoxdxwe cpdbqzyijsxzhpjtvlbivzc kbx.qavtxyvprif.ed,o,yzitiyzhxtw,atb,zdieqqb pqneyvpfbiieqqlbre.,b xqldoqnexfcjljteyqe,b ijsxijchtdrqxtn tdprims,n ivldiupqneyitwphpwiticzwpbieqqlqrxyx.twq k.fzipqnexfcjphkqsxi,aqe,oxwoivzda,ox.xoqbeiupqb pqqtb phieqqb pe.xb,ntwqnexfcjphiin,pdnxitywit.jtytvttwqtdbxwbtzpdnxk"
 alphabet = "abcdefghijklmnopqrstuvwxyz ,."
@@ -8,10 +8,6 @@ strict_words = []
 # import common words to RAM
 for line in common_words_file:
     common_words.append(line.strip())
-
-
-# shift_key = 18
-# shift_key2 = 10
 
 def decrypt(shift_key, lock):
     # simple cipher cesar
@@ -24,7 +20,6 @@ def decrypt(shift_key, lock):
             if word.lower() in strict_words:
                 lock.acquire()
                 print(shift_key, shift_key2, word, out, '\n')
-                sys.stdout.flush()
                 lock.release()        
                 break  
 
@@ -49,9 +44,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-    
-
-
-
-
