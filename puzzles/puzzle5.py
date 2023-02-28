@@ -8,6 +8,7 @@ common_words_file = open('common_words_file.txt', 'r')
 for line in common_words_file:
     common_words.append(line.strip())
 
+# select only words that have 4 letters or more
 strict_words = list()
 for word in common_words:
             if len(word) >= 4 and word not in strict_words:
@@ -17,7 +18,6 @@ for word in common_words:
 def decrypt(key):
     command = 'openssl aes-128-cbc -d -in puzzle5 -pass pass:' + str(key)
     response = subprocess.run(command.split(), stdout=subprocess.PIPE)
-    print(key)
 
     if response.returncode == 0:
         try:
