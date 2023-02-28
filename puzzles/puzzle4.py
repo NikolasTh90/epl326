@@ -47,7 +47,7 @@ def transpose(K,encrypted_message_pack, lock, ret_val):
                 break
 
 
-def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
+def cipher(shift_key, encrypted_message, alphabet, lock, ret_val):
             out = ''
             for i, letter in enumerate(encrypted_message):
                     out += alphabet[(alphabet.index(letter) +
@@ -60,30 +60,31 @@ def cipher(shift_key, shift_key2, encrypted_message, alphabet, lock, ret_val):
 
 
 def main():
+    # get words from common words with length 4+
+
     for word in common_words:
             if len(word) >= 4 and word not in strict_words:
                 strict_words.append(word)   
     for alphabet_combination in generate_alphabet(alphabet):
-        lock = multiprocessing.Lock()
-        manager = multiprocessing.Manager()
-        ret_val_cipher = manager.list()
+        alphabet_combination = "".join(alphabet_combination)
 
         #mutex lock
-        # get words from common words with length 4+
+        lock = multiprocessing.Lock()
+        manager = multiprocessing.Manager()
+        ret_val_cipher = manager.list() # list that returns from cipher 
+
         
+        # Cipher algorithm
         jobs = []
-        # for value in ret_val.values():
         for shift_key in range(len(alphabet_combination)):
-                # for shift_key2 in range(len(alphabet)):
-                    # cipher(shift_key, shift_key2, value[1], lock)
-            p = multiprocessing.Process(target=cipher, args=(shift_key, 0,  encrypted_message, alphabet_combination, lock, ret_val_cipher))
+            p = multiprocessing.Process(target=cipher, args=(shift_key,  encrypted_message, alphabet_combination, lock, ret_val_cipher))
             jobs.append(p)
             p.start()
         for job in jobs:
             job.join()      
                 
         ret_val_trans = manager.list()
-        # create threads for each shift key 1 and 2        
+        # create threads for each shift key 1 transposition        
         jobs = []
         for message in ret_val_cipher:
                     p = multiprocessing.Process(target=transpose, args=(0, message, lock, ret_val_trans))
