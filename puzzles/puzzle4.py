@@ -10,8 +10,12 @@ for line in common_words_file:
     common_words.append(line.strip())
   
 def generate_alphabet(strings):
-    all_combinations = itertools.permutations(strings, len(strings))
-    return all_combinations
+    all_alphabets = []
+    all_combinations = itertools.permutations(strings[:-1], len(strings)-1)
+    for combination in all_combinations:
+        combination = "".join(combination)+strings[-1]
+        all_alphabets.append(combination)
+    return all_alphabets
     
 #decrypt
 def transpose(K,encrypted_message_pack, lock, ret_val):
@@ -63,10 +67,10 @@ def main():
     # get words from common words with length 4+
 
     for word in common_words:
-            if len(word) >= 4 and word not in strict_words:
+            if len(word) == 5 and word not in strict_words:
                 strict_words.append(word)   
     for alphabet_combination in generate_alphabet(alphabet):
-        alphabet_combination = "".join(alphabet_combination)
+        # alphabet_combination = "".join(alphabet_combination)
 
         #mutex lock
         lock = multiprocessing.Lock()
