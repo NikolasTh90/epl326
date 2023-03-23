@@ -21,7 +21,7 @@ for line in common_words_file:
     common_words.append(line.strip())
 
 
-def decrypt(shift_key, shift_key2, alphabet, lock):
+def decrypt(shift_key, shift_key2, alphabet):
     for shift_key2 in range (len(alphabet)):
         for shift_key3 in range(len(alphabet)):
                 out = ''
@@ -37,9 +37,9 @@ def decrypt(shift_key, shift_key2, alphabet, lock):
                 # checks if output has any common words
                 for word in out.split(' '):
                     if word.lower() in strict_words:
-                        lock.acquire()
+                        # lock.acquire()
                         print(str(shift_key) + ' ' + str(shift_key2) + ' ' + str(shift_key3) + ' ' + word + ' ' + out   + '\n')
-                        lock.release()
+                        # lock.release()
                         break
 
 def main():
@@ -51,21 +51,14 @@ def main():
            strict_words.append(word)   
     
     # create threads for each shift key 1 and 2        
-    jobs = []
-    for alphabet_combination in generate_alphabet(alphabet):
-    
-        for shift_key in range(len(alphabet)):
-            # for shift_key2 in range(len(alphabet)):
-            p = multiprocessing.Process(target=decrypt, args=(shift_key, 0, alphabet_combination, lock))
-            jobs.append(p)
-            p.start()
-        if len(jobs) >= 100:
-            for job in jobs:
-                job.join()
-            jobs = []
+    with multiprocessing.Pool(processes=6) as pool:
+        for alphabet_combination in generate_alphabet(alphabet):
+            for shift_key in range(len(alphabet_combination)):
+                pool.apply_async(decrypt, args=(shift_key, 0, alphabet_combination))
         
-    for job in jobs:
-        job.join()
+        
+        pool.close()
+        pool.join()
         
 if __name__ == '__main__':
     main()
