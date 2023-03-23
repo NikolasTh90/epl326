@@ -30,7 +30,7 @@ for subtable in new_table:
         encrypted_message += letter
 
 # print(encrypted_message)
-
+encrypted_message="nospnmiueu _tta_rcehe dt utnlpooasn nnukh"
 for K in range(1,10):
     if len(encrypted_message)%K != 0:
             continue
