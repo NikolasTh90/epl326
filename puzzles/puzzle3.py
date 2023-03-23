@@ -38,7 +38,7 @@ def decrypt(shift_key, shift_key2, alphabet):
                 for word in out.split(' '):
                     if word.lower() in strict_words:
                         # lock.acquire()
-                        print(str(shift_key) + ' ' + str(shift_key2) + ' ' + str(shift_key3) + ' ' + word + ' ' + out   + '\n')
+                        print(alphabet + " " + str(shift_key) + ' ' + str(shift_key2) + ' ' + str(shift_key3) + ' ' + word + ' ' + out   + '\n')
                         # lock.release()
                         break
 
