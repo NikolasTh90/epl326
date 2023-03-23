@@ -59,10 +59,13 @@ def main():
             p = multiprocessing.Process(target=decrypt, args=(shift_key, 0, alphabet_combination, lock))
             jobs.append(p)
             p.start()
-            if len(jobs) == 9000:
-                for job in jobs:
-                    job.join()
-                jobs = []
-
+        if len(jobs) >= 100:
+            for job in jobs:
+                job.join()
+            jobs = []
+        
+    for job in jobs:
+        job.join()
+        
 if __name__ == '__main__':
     main()
