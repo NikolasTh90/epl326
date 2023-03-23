@@ -84,18 +84,22 @@ def main():
             p = multiprocessing.Process(target=cipher, args=(shift_key,  encrypted_message, alphabet_combination, lock, ret_val_cipher))
             jobs.append(p)
             p.start()
-        for job in jobs:
-            job.join()      
+            if len(jobs) == 9000:
+                for job in jobs:
+                    job.join()
+                jobs = []     
                 
         ret_val_trans = manager.list()
         # create threads for each shift key 1 transposition        
         jobs = []
         for message in ret_val_cipher:
-                    p = multiprocessing.Process(target=transpose, args=(0, message, lock, ret_val_trans))
-                    jobs.append(p)
-                    p.start()
-        for job in jobs:
-            job.join()
+            p = multiprocessing.Process(target=transpose, args=(0, message, lock, ret_val_trans))
+            jobs.append(p)
+            p.start()
+            if len(jobs) == 9000:
+                for job in jobs:
+                    job.join()
+                jobs = [] 
     
     
 

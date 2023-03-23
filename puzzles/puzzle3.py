@@ -47,7 +47,7 @@ def main():
     lock = multiprocessing.Lock()
     # get words from common words with length 4+
     for word in common_words:
-       if len(word) >= 4 and word not in strict_words:
+       if len(word) == 6 and word not in strict_words:
            strict_words.append(word)   
     
     # create threads for each shift key 1 and 2        
@@ -56,11 +56,13 @@ def main():
     
         for shift_key in range(len(alphabet)):
             # for shift_key2 in range(len(alphabet)):
-                p = multiprocessing.Process(target=decrypt, args=(shift_key, 0, alphabet_combination, lock))
-                jobs.append(p)
-                p.start()
-        for job in jobs:
-            job.join()
+            p = multiprocessing.Process(target=decrypt, args=(shift_key, 0, alphabet_combination, lock))
+            jobs.append(p)
+            p.start()
+            if len(jobs) == 9000:
+                for job in jobs:
+                    job.join()
+                jobs = []
 
 if __name__ == '__main__':
     main()
