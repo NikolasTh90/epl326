@@ -1,7 +1,7 @@
 import multiprocessing, sys, itertools
 multiprocessing.set_start_method('fork') # sets the same stdout for all threads
 encrypted_message = "jye,---nexjnxoummxw,eoqxx,0ejrjnrrwcnl,wy-qlevmqe,eafxehwle-uno.q.,um n xxeejqexn .,rexmnye,lke-nnnjeeunux-enwewav,wnnwlx q,lknm.-qtnrn blamumvweg eeyge.qevjn..rnqqkvek,n-ewewy.-nxeenlex0r ejlj,h w p,eej-x,ujfeye,-x e-lvv  qpnwxjuqwniu,rqcuj gwxr,jlr xe-rrrtjxjrn. eow eejice,eexuue-eln xlne,r,wp-t kvenc,nmnvaliexcxalona,,ef,.t-lqwcewennur--eq-ejxnqixoekjt -q qqxeunyxjpe,eleenwjetn-tm eei"
-alphabet = [",","-"," ",'.','0',"abcdefghijklmnopqrstuvwxyz"]
+alphabet = [",","-"," ", ".0abcdefghijklmnopqrstuvwxyz"]
 common_words = []
 strict_words = []
 common_words_file = open('common_words_file.txt', 'r')
