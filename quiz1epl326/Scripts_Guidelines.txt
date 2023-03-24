@@ -1,0 +1,37 @@
+Case Vigenere 1,2,3
+
+	1st Add Message
+	if too much plaintexts increase detected words
+	If no words found - nothing print on console 
+		decrease detected words
+		change alphabets 
+		add elseif check which means no space in cipher text (check it in message)
+
+
+Case vigenere transposition
+	
+	1st Add Message
+	if too much plaintexts decrease detected words
+	If no plaintext found - nothing print on console 
+		decrease detected words
+		change alphabets 
+		add elseif check which means no space in cipher text (check it in message)
+	Change vigenere key up to 3
+
+
+Case transposition
+	1st add message
+	if too much plaintexts decrease detected words
+	if no much plaintexts 
+		decrease detected (maybe detected>0 if only 1 word inside)
+		case no space add code of elseif
+
+Case aes 
+	efamentin
+
+Case hash
+	change algorithm
+	change hashed to find
+	change length searching
+	change how possible plaintexts are generated (either numbers,lower,upper)
+		
