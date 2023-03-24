@@ -1,0 +1,12 @@
+wget https://srec.cs.ucy.ac.cy/epl326/quiz1/g4/1038399.tar.gz
+tar -xzvf 1038399.tar.gz
+
+
+openssl aes-128-cbc -d -in <encryptedfile> -k <key> -out file.decrypted
+openssl aes-128-ecb -d -in <encryptedfile> -k <key> -out file.decrypted
+
+openssl rsautl -decrypt -inkey public.pem -pubin <encrypted> -out <wheretowrite>
+openssl rsautl -decrypt -inkey private.pem -in <encrypted> -out <wheretowrite>
+
+echo "Hello World" | openssl dgst -sha256
+openssl dgst -sha256 /etc/passwd > etc.passwd.hash 
